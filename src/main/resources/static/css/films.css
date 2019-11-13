@@ -1,0 +1,198 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+div{
+    display: block;
+}
+ul{
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+li{
+    vertical-align: top;
+    text-align: -webkit-match-parent;
+}
+.head_inner{
+    /*width: 1200px;*/
+    height: 68px;
+    margin: 0 auto;
+    background-color: rgba(234, 231, 225, 0.95);
+}
+.mod_search {
+    position: absolute;
+    top: 10px;
+    left: 60%;
+    width: 680px;
+    margin-left: -340px;
+}
+#show:hover #hide{
+    display: block;
+}
+#show #hide{
+    display: none;
+}
+#hide {
+    position: absolute;
+    top: 33px;
+    left: 8%;
+    width: 150px;
+    height: 100px;
+    background-color: #DEB261;
+}
+#hide li{
+    padding-top: 5px;
+}
+#hide li a{
+    text-decoration: none;
+}
+.site_channel {
+    position: relative;
+    margin: 22px 0 0 100px;
+    float: left;
+    font-size: 0;
+    letter-spacing: -3px;
+    line-height: 26px;
+}
+.site_channel .channel_nav {
+    display: inline-block;
+    position: relative;
+    margin-right: 20px;
+    color: #111;
+    font-size: 15px;
+    letter-spacing: normal;
+    vertical-align: top;
+    color: rgb(13, 16, 17);
+}
+.navbar-form {
+    position: relative;
+    margin-top: 10px;
+}
+#body{
+    width: 1050px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    overflow: hidden;
+}
+#films{
+    width: 750px;
+    float: left;
+    margin-top: 9px;
+}
+#filmbox{
+    float: left;
+    padding: 10px;
+}
+#filmbox a{
+    text-decoration: none;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+}
+#filmbox a span{
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 24px;
+}
+ul li{
+    list-style: none;
+}
+.notabtitle {
+    display: block;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    padding-left: 12px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    margin-bottom: 0px;
+}
+#newblock {
+    width: 300px;
+    margin-bottom: 12px;
+}
+.right{
+    float: right;
+}
+.rs1{
+    position: relative;
+}
+.me2{
+    width: 300px;
+    padding: 0px;
+    margin-bottom: 0px;
+}
+.me2 li {
+    padding-top: 5px;
+    padding-bottom: 7px;
+    border-top: #DEDEDE 1px solid;
+    line-height: 1.6em;
+    display: block;
+}
+.me2 li .t3 {
+    float: left;
+    display: block;
+    width: 168px;
+    word-break: break-all;
+    text-indent: 6px;
+}
+#films li a img:hover{
+    transform: scale(1.1);
+}
+.score{
+    color: rgb(249, 48, 57);
+    font-size: 16px;
+    float: right;
+}
+.mod_filter{
+    width: 1180px;
+    margin: 10px auto 0;
+    padding-bottom: 6px;
+    padding-top: 0px;
+}
+.mod_filter .filter_item{
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+.mod_filter .filter_item .filter_title{
+    line-height: 26px;
+    float: left;
+    width: 60px;
+}
+.mod_filter .filter_item .filter_list {
+    margin-left: 60px;
+}
+.mod_filter .filter_item .filter_list li{
+    display: inline-block;
+    zoom: 1;
+    font-size: 14px;
+    line-height: 26px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    margin-right: 6px;
+}
+.mod_filter .filter_item .filter_list li a{
+    text-decoration: none;
+    /*text-decoration-line: none;*/
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+    cursor: pointer;
+}
+.listyle{
+    background: rgb(255, 185, 45);
+    border-radius: 15px;
+}
+.user_info{
+    z-index: 99;
+    position: absolute;
+    top: 19px;
+    right: 40px;
+}

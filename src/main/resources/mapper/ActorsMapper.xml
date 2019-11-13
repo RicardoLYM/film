@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.film.mapper.ActorsMapper">
+    <resultMap id="actorsResultMap" type="Actors">
+        <id column="A_ID" property="aId"/>
+        <result column="A_NAME" property="aName"></result>
+    </resultMap>
+
+    <!--添加新演员-->
+    <insert id="insertActor" parameterType="Object">
+        insert into ACTORS(A_NAME) values (#{param1})
+    </insert>
+    <!--判断演员之前是否存在-->
+    <select id="selectActor" parameterType="String" resultType="Integer">
+        select count(A_ID) from ACTORS where A_NAME = #{param1}
+    </select>
+    <!--所有的演员-->
+    <select id="findAllActors" resultMap="actorsResultMap">
+        select A_ID,A_NAME from actors
+    </select>
+    <select id="findAIdByAName" resultType="Integer">
+        select A_ID from actors where A_NAME in
+        <foreach collection="list" item="i" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+    </select>
+    <insert id="insertNewFilmActors" parameterType="Object">
+        insert into film_actors (F_A_ID,A_ID) values
+        <foreach collection="list" item="i" separator=",">
+            (#{fId},#{i})
+        </foreach>
+    </insert>
+</mapper>

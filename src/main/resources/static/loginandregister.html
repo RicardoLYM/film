@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login&Register</title>
+    <link rel="stylesheet" href="css/loginandregister.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div class="body">
+    <div class="veen">
+        <div class="login-btn splits">
+            <p>Already an user?</p>
+            <button>Login</button>
+        </div>
+        <div class="rgstr-btn splits">
+            <p>Don't have an account?</p>
+            <button>Register</button>
+        </div>
+        <div class="wrapper">
+            <div id="login">
+                <h3>Login</h3>
+                <div class="mail">
+                    <input type="text" name="" id="uname">
+                    <label>Mail or Username</label>
+                </div>
+                <div class="passwd">
+                    <input type="password" name="" id="upwd">
+                    <label>Password</label>
+                </div>
+                <div class="submit">
+                    <button class="dark" onclick="login()">Login</button>
+                </div>
+            </div>
+            <div id="register">
+                <h3>Register</h3>
+                <!--<div class="name">-->
+                    <!--<input type="text" name="">-->
+                    <!--<label>Full Name</label>-->
+                <!--</div>-->
+                <!--<div class="mail">-->
+                    <!--<input type="mail" name="">-->
+                    <!--<label>Mail</label>-->
+                <!--</div>-->
+                <!--<form action="">-->
+                <div class="uid">
+                    <input type="text" name="" id="uname1" onblur="keyUp1()">
+                    <span id="unameMsg"></span>
+                    <label>User Name</label>
+                </div>
+                <div class="passwd">
+                    <input type="password" name="" id="upwd1" onblur="keyUp2()">
+                    <span id="upwdMsg"></span>
+                    <label>Password</label>
+                </div>
+                <div class="submit">
+                    <button class="dark" onclick="register()">Register</button>
+                </div>
+                <!--</form>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".veen .rgstr-btn button").click(function() {
+            $('.veen .wrapper').addClass('move');
+            $('.body').css('background', '#e0b722');
+        });
+        $(".veen .login-btn button").click(function() {
+            $('.veen .wrapper').removeClass('move');
+            $('.body').css('background', '#ff4931');
+        });
+    });
+    function login() {
+        var uname = document.getElementById("uname").value;
+        var upwd = document.getElementById("upwd").value;
+        //console.log(uname);
+        $.ajax({
+            url:"testlogin1",
+            type:"post",
+            data:'uname='+uname+'&upwd='+upwd,
+            success:function(data){
+                if(data!=0){
+                    window.location.href="../films";
+                }
+                else{
+                    alert("用户名或者密码错误!!!");
+                }
+            },
+            error:function () {
+                alert("fail!");
+            }
+        });
+    }
+    function keyUp1() {
+        var uname = document.getElementById("uname1").value;
+        var unameMode = /^[0-9A-z\u4e00-\u9fa5]{3,10}$/;
+        if(unameMode.test(uname)){
+            console.log("用户名合法！");
+            //用户名除了满足要求外   还需要和后台进行交互验证，验证用户名是否重复，这个时候就要使用AJAX动态交互了
+            $.ajax({
+                type:'post',//请求方式
+                url:'checkUname',//请求的url地址 建议使用绝对地址
+                data:'uname='+uname,//请求携带的参数
+                dataType:'json',//如果后台返回的数据是String改造的  这里需要指定返回类型 否则result.msg取不到值
+                success:function(result){//注意 seccess中的function的data 可以解析后台响应的数据
+                    //success是回调函数 可以将 后台数据返回到 当前页面 接着 进行具体的操作
+                    console.log(result);
+                    console.log(result.msg);//后台定义的数据为 {\"msg\":\"no\"} result.msg中msg是定义的名字
+                    // 根据result.msg 在页面显示结果
+                    if(result.msg=="no"){
+                        document.getElementById("unameMsg").innerHTML = "<font color='red'>&radic;用户名重复！</font>";
+                    }
+                },
+                error:function(data){ //失败的回调函数 如果url地址不对 或者 后台有错 都会进入该方法（可以不写）
+                    console.log("通讯失败");
+                }
+            });
+            document.getElementById("unameMsg").innerHTML = "<font color='green'>&radic;用户名合法！</font>";
+        }else{
+            console.log("用户名不合法！");
+            document.getElementById("unameMsg").innerText = "X用户名不合法!";
+            //使用JS  操作 CSS 样式
+            document.getElementById("unameMsg").style.color = "blue";
+            document.getElementById("unameMsg").style.fontSize = "20px";
+        }
+    }
+    function keyUp2(){
+        var upwd  = document.getElementById("upwd1").value;
+        var upwdMode = /^[0-9A-z\u4e00-\u9fa5]{6,16}$/;
+        if(upwdMode.test(upwd)){
+            console.log("密码合法");
+            document.getElementById("upwdMsg").innerHTML="<font color='green'>&radic;密码合法！</font>";
+        }else{
+            console.log("密码不合法");
+            document.getElementById("upwdMsg").innerText="密码不合法";
+            document.getElementById("upwdMsg").style.color="red";
+            document.getElementById("upwdMsg").style.fontSize="14px"
+
+        }
+    }
+    function register() {
+        var uname = document.getElementById("uname1").value;
+        var upwd = document.getElementById("upwd1").value;
+        $.ajax({
+            url:"testRegister",
+            type:"post",
+            data:'uname='+uname+'&upwd='+upwd,
+            success:function (data) {
+                if(data){
+                    alert("注册成功");
+                }
+                else{
+                    alert("注册失败");
+                }
+            },
+            error:function () {
+            }
+        });
+    }
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/jquery-3.4.1.js"></script>
+    <link type="text/css" rel="stylesheet" href="../css/filmDetail.css">
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+<div id="minfo" class="clearfix">
+    <input type="hidden" th:value="${filmDetail.fId}" id="fid">
+    <div class="img">
+        <img th:src="@{'../image/'+${filmDetail.fImg}}">
+        <br>
+        <button id="store" class="btn btn-default">收藏</button>
+    </div>
+    <div class="info">
+        <h1 class="font14" th:text="${filmDetail.fName}"></h1>
+        <br>
+        <span class="font_888">演员：</span>
+        <span th:each="a:${filmDetail.getActorsList()}">
+            <a th:text="${a.getaName()}"></a>&nbsp;
+        </span>
+        <br>
+        <span class="font_888">类型：</span>
+        <span th:each="ty:${filmDetail.getTypeList()}">
+            <a th:text="${ty.tName}"></a>&nbsp;
+        </span>
+        <br>
+        <span class="font_888">导演：</span>
+        <span th:text="${filmDetail.fDirector}"></span>
+        <br>
+        <span class="font_888">上映日期：</span>
+        <span th:text="${filmDetail.fTime}"></span>
+        <br>
+        <span class="font_888">评分：</span>
+        <span th:text="${filmDetail.fScore}"></span>
+        <br>
+        <span class="font_888">剧情介绍：</span>
+        <span th:text="${filmDetail.fIntro}"></span>
+        <br>
+    </div>
+</div>
+<style>
+    a {
+        color: rgb(27, 31, 34);
+    }
+</style>
+<script type="text/javascript">
+    window.onload = function () { 
+        isStore()
+    }
+    document.getElementById("store").onclick = function () {
+        var text = document.getElementById("store").innerHTML;
+        if("收藏"==text){
+            var fid = document.getElementById("fid").value;
+            if(getCookie("uid")==""){
+                alert("请先登录！！！");
+            }
+            $.ajax({
+                url:"../storeFilm",
+                data:'uid='+getCookie("uid")+'&fid='+fid,
+                success:function (data) {
+                    alert("收藏成功！！！");
+                    $('#store').html("已收藏");
+                }
+            });
+        }
+        if("已收藏"==text){
+            var sure=confirm("取消收藏？？？");
+            if(sure){deleteFilm()
+            $('#store').html("收藏");
+        }}
+
+    }
+    function isStore() {
+        var fid = document.getElementById("fid").value;
+        $.ajax({
+            url:"../isExist",
+            data:'uid='+getCookie("uid")+'&fid='+fid,
+            success:function (data) {
+                if(data>0){
+                    $('#store').html("已收藏");
+                }
+            }
+        })
+    }
+    function deleteFilm() {
+        var fid = document.getElementById("fid").value;
+        $.ajax({
+            url:"../deleteFilm",
+            data:'uid='+getCookie("uid")+'&fid='+fid,
+            success:function (data) {
+                alert("取消收藏成功");
+            }
+        })
+    }
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+</script>
+</body>
+</html>

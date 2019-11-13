@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<h1>后台管理</h1>
+<div class="btn-group btn-group-lg" role="group" aria-label="...">
+    <button type="button" class="btn btn-default active">添加电影</button>
+    <button type="button" class="btn btn-default">添加演员</button>
+    <button type="button" class="btn btn-default">添加电影类型</button>
+</div>
+<div class="content show">
+    <h2>输入您想要添加电影的信息</h2>
+    <form action="fileUpload" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:value="${fId}" name="fId">
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>选择文件: <input type="file" name="fileName"/></span>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>电影名称：</span>
+        <input type="text" placeholder="输入电影名" id="fName" name="fName"><br>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>电影日期：</span>
+        <input type="date" id="fTime" name="fTime"><br>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>电影导演：</span>
+        <input type="text" placeholder="输入导演名" id="fDirector" name="fDirector"><br>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>电影简介：</span>
+        <textarea id="fIntro" rows="10" placeholder="输入电影简介" name="fIntro"></textarea><br>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>电影评分：</span>
+        <input type="text" placeholder="输入电影评分" id="fScore" name="fScore"><br>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>选择演员：</span>
+        <div>
+        <label style="font-weight: normal;margin-left: 10px" th:each="a:${actors}">
+            <input type="checkbox" th:value="${a.aName}" th:text="${a.aName}" name="aName">
+        </label></div>
+        <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>选择类型：</span>
+        <div>
+        <label style="font-weight: normal;margin-left: 10px" th:each="t:${types}">
+            <input type="checkbox" th:value="${t.tName}" th:text="${t.tName}" name="tName">
+        </label></div>
+        <p><input type="submit" value="提交"/></p>
+    </form>
+</div>
+<div class="content">
+    <h2>请输入您想要添加的演员的信息</h2>
+    <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>姓&nbsp;名：</span><input type="text"
+                                                                                               placeholder="输入演员姓名"
+                                                                                               id="aName"><br>
+    <button class="btn-group" onclick="insertActor()">提交</button>
+</div>
+<div class="content">
+    <h2>请输入您想要添加的电影的类型</h2>
+    <span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>类&nbsp;型：</span><input type="text"
+                                                                                               placeholder="输入电影类型"
+                                                                                               id="tName"><br>
+    <button class="btn-group" onclick="insertType()">提交</button>
+</div>
+<style>
+    .content {
+        margin: 10px auto;
+        display: none;
+    }
+</style>
+<script type="text/javascript">
+    function insertActor() {
+        var aName = document.getElementById("aName").value;
+        $.ajax({
+            url: "insertActor",
+            method: 'post',
+            data: 'aName=' + aName,
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    alert("新增演员成功！！！");
+                    $('#aName').val("");
+                } else
+                    alert("新增演员失败！！！该演员已存在！！！");
+                    $('#aName').val("");
+            },
+            error: function () {
+                alert("ajax fail！！！");
+            }
+        })
+    }
+
+    function insertType() {
+        var tName = document.getElementById("tName").value;
+        $.ajax({
+            url: "insertType",
+            method: 'post',
+            data: 'tName=' + tName,
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    alert("新增类型成功！！！");
+                    $('#tName').val("");
+                } else
+                    alert("新增类型失败！！！该类型已存在！！！");
+                    $('#tName').val("");
+            },
+            error: function () {
+                alert("ajax fail！！！");
+            }
+        })
+    }
+    //获取页面的每个按钮
+    var btns = document.getElementsByClassName("btn btn-default");
+    //获取内容盒子
+    var contents = document.getElementsByClassName("content");
+    //遍历每个按钮为其添加点击事件
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].index = i;
+        btns[i].onclick = function () {
+            //对当前点击的按钮赋予active类名及显示当前按钮对应的内容
+            for (var j = 0; j < btns.length; j++) {
+                btns[j].className = btns[j].className.replace(' active', '').trim();
+                contents[j].className = contents[j].className.replace(' show', '').trim();
+            }
+            this.className = this.className + ' active';
+            contents[this.index].className = contents[this.index].className + ' show';
+        };
+
+    }
+</script>
+</body>
+</html>

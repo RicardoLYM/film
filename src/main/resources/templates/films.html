@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>XXX电影网</title>
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/films.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<div class="head_inner">
+    <div class="mod_search">
+        <form action="searchFilms" class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" id="search_box" name="search_box">
+            </div>
+            <button class="btn btn-default">Submit</button>
+        </form>
+    </div>
+    <div class="user_info">
+        <p id="user"></p>
+        <div id="hide">
+            <ul>
+                <li><a href="javascript:userInfo()">个人中心</a></li>
+                <li><a href="javascript:backStage()">后台管理</a></li>
+                <li><a href="javascript:userLogout()">退出登录</a></li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<div class="mod_filter">
+    <div class="filter_item">
+        <div class="filter_title">按类型</div>
+        <ul class="filter_list">
+            <li class="listyle">
+                <a class="ty">全部</a>
+            </li>
+            <li th:each="t:${types}">
+                <a th:text="${t.tName}" th:id="${t.tId}" class="ty"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="body">
+    <div id="films">
+        <ul id="aaa">
+            <li id="filmbox" th:each="f:${films}">
+                <a th:href="@{'films/'+${f.fId}}">
+                    <img th:src="@{'../image/'+${f.fImg}}" style="width: 150px;height:200px;padding: 1px "><br/></a>
+                <div style="margin-top: 10px;">
+                    <a th:href="@{'films/'+${f.fId}}"><span th:text="${f.fName}"></span></a>
+                    <span class="score" th:text="${f.fScore}"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="newblock" class="right">
+        <div class="rs1">
+            <h3 class="notabtitle">最新电影</h3>
+            <ul class="me2">
+                <li class="clearfix" th:each="f:${newFilms}">
+                    <a th:href="@{'films/'+${f.fId}}" style="text-decoration: none"><span
+                            th:text="${f.fName}"></span></a>
+                    <span class=".t4" th:text="${f.fTime}" style="float: right"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    a {
+        color: #333;
+    }
+    .notabtitle {
+        background-color: rgb(222, 219, 211);
+        border-top-color: rgb(206, 201, 192);
+    }
+    .me2 li {
+        border-top-color: rgb(207, 202, 193);
+    }
+    #hide{
+        display: none;
+    }
+</style>
+<script type="text/javascript">
+    function lr(){
+        window.location.href="../Film";
+    }
+    window.onload = function () {
+        $(function () {
+            $(document).ready(
+                function () {
+                    var uname = "";
+                    $.ajax({
+                        url: "getUserSession",
+                        method: "POST",
+                        cache: false,
+                        async: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if(getCookie("uname")==""){
+                                $('#user').append("请先<button onclick=\"lr()\" style=\"border: none\">登录/注册</button>")
+                            }else{
+                                $('#user').append("欢迎用户！！！<a href='#' id='show' onclick='show()' style=\"cursor:hand\">"+getCookie("uname")+"</a>");
+                            }
+                        },
+                        error: function () {
+
+                        }
+                    });
+                })
+        })
+        array = document.getElementsByClassName("ty");
+        for (var i = 0; i < array.length; i++) {
+            array[i].onclick = function () {
+                var tName = this.innerHTML;
+                //console.log(tName);
+                if (tName == "全部") {
+                    window.location.reload();
+                } else {
+                    $.ajax({
+                        url: "findFilmsByTName",
+                        type: "post",
+                        data: 'tName=' + tName,
+                        success: function (result) {
+                            //console.log(result);
+                            $('#aaa').html("");
+                            $.each(result, function (index, data) {
+                                $('#aaa').append("<li style='float: left;padding: 10px;'>" +
+                                    "<a style=\"text-decoration: none;text-decoration-style: initial;text-decoration-color: initial;\" href=\"films/" + data.fId + "\">" +
+                                    "<img src=\"../image/" + data.fImg + "\" style=\"width: 150px;height:200px;padding: 1px \"><br/></a>" +
+                                    "<div style=\"margin-top: 10px;\">" + "<a style=\"text-decoration: none;text-decoration-style: initial;text-decoration-color: initial;\" href=\"films/" + data.fId + "\">" +
+                                    "<span style=\"font-weight: 700;letter-spacing: 0;line-height: 24px;\" >" + data.fName + "</span></a>" +
+                                    "<span style='color: rgb(249, 48, 57);font-size: 16px; float: right;'>" + data.fScore + "</span>" +
+                                    "</div></li>");
+                            });
+                        },
+                        error: function () {
+
+                        }
+                    })
+                }
+                $(".filter_list li").click(function () {
+                    $(this).siblings('li').removeClass('listyle');
+                    $(this).addClass('listyle');
+                })
+            }
+        }
+    }
+    function getCookie(name) {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+    function show(){
+        Show_Hidden(document.getElementById("hide"));
+    };
+    function Show_Hidden(obj) {
+        if(obj.style.display=="block")
+        {
+            obj.style.display='none';
+        }
+        else
+        {
+            obj.style.display='block';
+        }
+    }
+    function userLogout() {
+        $.ajax({
+            url:"userLogout",
+            dataType:"json",
+            success:function (data) {
+                if(getCookie("uid")==""){
+                    window.location.href="../films";
+                }
+
+            },
+            error:function () {
+
+            }
+        })
+    }
+    function userInfo() {
+        window.location.href="../userInfo";
+    }
+    function backStage() {
+        $.ajax({
+            url:"findUState",
+            method:'post',
+            data:'uid='+getCookie("uid"),
+            success:function (data) {
+                if(data==0){
+                    window.location.href="../backStage";
+                }else {
+                    alert("您还没有这个权限！！！");
+                }
+            },
+            error:function () {
+                alert("ajax fail");
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

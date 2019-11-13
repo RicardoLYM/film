@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<table class="table table-hover">
+    <tr>
+        <td class="active">用户编号</td>
+        <td class="success">用户名</td>
+        <td class="warning">用户密码</td>
+    </tr>
+    <tr th:each="u:${users}">
+        <td class="active" th:text="${u.uid}"></td>
+        <td class="success" th:text="${u.uname}"></td>
+        <td class="warning" th:text="${u.upwd}"></td>
+    </tr>
+</table>
+    <!--改造成动态分页-->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <!--上一页  标签处理 start -->
+            <li th:if="${pageNum eq 1}" class="disabled">
+                <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            <li th:if="${not(pageNum eq 1)}">
+                <!--使用 th:href  完成url处理    地址栏跳转  及  参数处理  -->
+                <a th:href="@{${'/showUsers2'}(pageNum=${pageNum-1})}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            <!--上一页  标签处理 end -->
+            <!--页码处理  start-->
+            <li th:each="pageNo:${#numbers.sequence(1,totalPages)}">
+                <!--pageNum 后台发送到前台的当前页码    pageNo页面中的当前页码-->
+                <a th:if="${pageNum eq pageNo}"  class="my_a" th:text="${pageNo}" style="background-color: #337ab7;color: #fff;">
+                    <span th:text="${pageNo}"></span></a>
+                <!--未被选中  页码处理-->
+                <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'/showUsers2'}(pageNum=${pageNo})}"><span th:text="${pageNo}"></span></a>
+            </li>
+            <!--页码处理  end-->
+        </ul>
+    </nav>
+
+    <!--静态分页模板    -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</body>
+</html>

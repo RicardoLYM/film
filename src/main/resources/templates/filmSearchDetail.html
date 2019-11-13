@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <link type="text/css" rel="stylesheet" href="../css/filmSearchDetail.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="wrapper_main">
+            <div th:each="f:${searchfilms}" class="result_item result_item_v">
+                <a th:href="@{'films/'+${f.fId}}" class="result_figure">
+                    <img th:src="@{'../image/'+${f.fImg}}" style="width: 160px;height:224px;">
+                </a>
+                <h2 class="result_title">
+                    <a th:href="@{'films/'+${f.fId}}">
+                        <em class="h1" th:text="${f.fName}"></em>
+                        <span class="type">电影</span>
+                    </a>
+                </h2>
+                <span class="result_score" th:text="${f.fScore}"></span>
+                <div class="result_info">
+                    <div class="info_item info_director">
+                        <span class="label">导&nbsp;演：</span>
+                        <span class="content" th:text="${f.fDirector}"></span>
+                    </div>
+                    <div class="info_item info_item_even">
+                        <span class="label">主&nbsp;演：</span>
+                        <span class="content" th:each="a:${f.getActorsList()}">
+                            <a th:text="${a.aName}"></a>
+                        </span>
+                    </div>
+                    <!--<br>-->
+                    <div class="info_item info_item_desc">
+                        <span class="label">简&nbsp;介：</span>
+                        <span class="desc_text" th:text="${f.fIntro}">
+                            <a class="desc_more" th:text="详细"></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</body>
+</html>

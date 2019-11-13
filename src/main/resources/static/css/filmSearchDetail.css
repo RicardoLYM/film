@@ -1,0 +1,199 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+div{
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+em{
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 500;
+}
+a{
+    text-decoration: none;
+    text-decoration-style: initial;
+    text-decoration-color: initial;
+    color: rgb(13, 16, 17);
+}
+.wrapper{
+    width: 1140px;
+    margin: 20px auto;
+    z-index: 1;
+    position: relative;
+}
+.wrapper_main{
+    width: 600px;
+    float: left;
+    transition: width .2s ease-in-out;
+}
+.result_item{
+    position: relative;
+    margin-bottom: 30px;
+    margin-left: 180px;
+    padding-bottom: 20px;
+}
+.result_item_v {
+
+    min-height: 204px;
+}
+.result_figure{
+    position: absolute;
+    top: 0;
+    left: -180px;
+    width: 160px;
+    height: 224px;
+}
+.result_title{
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+h2{
+    display: block;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin: 10px 0 0 0;
+}
+.h1{
+    color: rgb(255, 67, 25);
+}
+.result_title .type {
+    color: rgb(144, 140, 131);
+    font-size: 12px;
+}
+.result_score{
+    color: rgb(255, 79, 10);
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+}
+.result_info{
+    font-size: 0;
+    letter-spacing: -3px;
+}
+.result_info .info_item{
+    width: 230px;
+    color: rgb(144, 140, 131);
+    display: inline-block;
+    max-width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+    font-size: 12px;
+    letter-spacing: normal;
+    line-height: 22px;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+    word-break: break-all;
+}
+.result_info .info_item a {
+    margin-right: 5px;
+}
+.result_info .info_director .content {
+    color: rgb(34, 38, 41);
+}
+/*.result_info .info_intro{*/
+    /*max-width: 100%;*/
+    /*line-height: 18px;*/
+    /*white-space: normal;*/
+/*}*/
+/*.result_info .info_intro.label {*/
+    /*position: relative;*/
+    /*top: 1px;*/
+/*}*/
+/*.desc_text{*/
+    /*color: rgb(92, 92, 92);*/
+    /*!*text-align: justify;*!*/
+    /*font-size: 12px;*/
+    /*letter-spacing: normal;*/
+    /*width: 540px;*/
+/*}*/
+/*.info_intro .desc_text{*/
+    /*display: inline-block;*/
+    /*position: relative;*/
+    /*width: 390px;*/
+    /*min-height: 20px;*/
+    /*max-height: 40px;*/
+    /*overflow: hidden;*/
+    /*line-height: 20px;*/
+    /*vertical-align: top;*/
+/*}*/
+/*.result_item .desc_text {*/
+    /*font-size: 12px;*/
+    /*letter-spacing: normal;*/
+    /*line-height: 20px;*/
+/*}*/
+.result_info .info_item a:last-child {
+    /*margin-right: -4px;*/
+}
+/*.desc_text .desc_more {*/
+    /*background-image: linear-gradient(90deg, rgba(234, 231, 225, 0.2) 0px, rgb(234, 231, 225) 20px);*/
+    /*background-color: initial;*/
+    /*color: rgb(92, 92, 92);*/
+/*}*/
+/*.desc_text .desc_more {*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*padding-left: 30px;*/
+    /*background: #fff;*/
+    /*background: linear-gradient(90deg,rgba(255,255,255,.2) 0,#fff 20px);*/
+    /*color: #666;*/
+    /*line-height: 20px;*/
+    /*cursor: pointer;*/
+/*}*/
+.result_info .info_item_desc {
+    max-width: 100%;
+    line-height: 18px;
+    white-space: normal;
+}
+.result_info .info_item {
+    /**zoom: 1;*/
+    display: inline-block;
+    /**display: inline;*/
+    max-width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+    /*color: #999;*/
+    font-size: 12px;
+    letter-spacing: normal;
+    /*line-height: 22px;*/
+    text-overflow: ellipsis;
+    vertical-align: top;
+    /*white-space: nowrap;*/
+    word-break: break-all;
+}
+.result_info .info_item_desc .label {
+    position: relative;
+    top: 1px;
+}
+.info_item_desc .desc_text {
+    display: inline-block;
+    position: relative;
+    width: 565px;
+    min-height: 20px;
+    max-height: 40px;
+    overflow: hidden;
+    line-height: 20px;
+    vertical-align: top;
+}
+.result_item .desc_text {
+    font-size: 12px;
+    letter-spacing: normal;
+    /*line-height: 20px;*/
+}
+.result_item_v .desc_text{
+    color: rgb(92, 92, 92);
+}
+.result_item_v .desc_text{
+    text-align: justify;
+}
+

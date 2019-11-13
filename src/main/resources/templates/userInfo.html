@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/userInfo.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<h1>个人中心</h1>
+<div class="btn-group btn-group-lg" role="group" aria-label="...">
+    <button type="button" class="btn btn-default active">修改资料</button>
+    <button type="button" class="btn btn-default" id="store">我的收藏</button>
+</div>
+<div class="content show">
+    <h2>个人资料</h2>
+    <div id="userInfo">
+        <h3 id="name">用户名：</h3>
+        <h3 id="pwd">密&nbsp;&nbsp;&nbsp;码：</h3>
+        <button class="btn-group" onclick="alterUser()">修改</button>
+    </div>
+</div>
+<div class="content">
+    <div id="filmInfo">
+
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function () {
+        welcome();
+        showUser();
+        showFilms();
+    }
+    document.getElementById("store").onclick = function () {
+
+    }
+    function welcome() {
+        $('h1').append(","+getCookie("uname"));
+    }
+    function showFilms() {
+        $.ajax({
+            url:"storeFilms",
+            data:'uid='+getCookie("uid"),
+            dataType:"json",
+            success:function (result) {
+                if(result==""){
+                    $('#filmInfo').append("<p>你暂时还没有收藏的影片</p>")
+                }
+                $.each(result, function (index, data) {
+                    $('#filmInfo').append("<li style='float: left;padding: 10px;list-style: none'><a href='films/"+data.fId+"' style='text-decoration: none'><img width='150px' height='200px' src='../image/"+data.fImg+"'><br>" +
+                        "<div><span style='font-weight: 700;letter-spacing: 0;line-height: 30px;'>"+data.fName+"</span></a>" +
+                       "<a  href='javaScript:void(0)'id='"+data.fId+"' style='color: #0f0f0f;float: right'onclick='deleteId(this)'><span class=\"glyphicon glyphicon-trash\" style='line-height: 30px' ></span></a>"+
+                        "</div></li>")
+                })
+            }
+        })
+    }
+    function showUser() {
+        $.ajax({
+            url:"showUser",
+            data:'uid='+getCookie("uid"),
+            dataType:"json",
+            success:function (data) {
+                $('#name').append("<input type='text' id=uname value='"+data.uname+"' readonly/>");
+                $('#pwd').append("<input type='text' id=upwd value='"+data.upwd+"' />");
+            }
+        })
+    }
+    function alterUser() {
+        var upwd = document.getElementById("upwd").value;
+        //console.log(upwd);
+        $.ajax({
+            url:"updateUser",
+            data:'uid='+getCookie("uid")+'&upwd='+upwd,
+            success:function (data) {
+                console.log(data)
+                alert("修改成功！！！");
+                location.reload(true)
+            },
+            error:function () {
+                alert("修改失败！！！");
+            }
+        })
+    }
+    function deleteId(e) {
+        var sure = confirm("取消收藏？？？");
+        if(sure){
+            $.ajax({
+                url:"../deleteFilm",
+                method:"get",
+                data:'uid='+getCookie("uid")+'&fid='+e.id,
+                success:function (data) {
+                    alert("取消收藏成功");
+                    location.reload(true);
+                },
+                error:function () {
+                    alert("ajax fail");
+                }
+            })
+        }
+    }
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+    //获取页面的每个按钮
+    var btns = document.getElementsByClassName("btn btn-default");
+    //console.log(btns)
+    //获取内容盒子
+    var contents = document.getElementsByClassName("content");
+    //遍历每个按钮为其添加点击事件
+    for(var i=0;i<btns.length;i++){
+        btns[i].index = i;
+        btns[i].onclick = function(){
+            //对当前点击的按钮赋予active类名及显示当前按钮对应的内容
+            for(var j=0;j<btns.length;j++){
+                btns[j].className = btns[j].className.replace(' active', '').trim();
+                contents[j].className = contents[j].className.replace(' show', '').trim();
+            }
+            this.className = this.className + ' active';
+            contents[this.index].className = contents[this.index].className + ' show';
+        };
+
+    }
+</script>
+</body>
+</html>
+

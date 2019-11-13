@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.film.mapper.UsertestMapper">
+
+    <!--用户注册方法-->
+    <insert id="addUser" parameterType="Usertest">
+        insert into usertest(uname,upwd) values (#{uname},#{upwd})
+    </insert>
+    <!--用户登录方法-->
+    <select id="findByName" parameterType="Usertest" resultType="Integer">
+        select uid from usertest where uname=#{uname} and upwd = #{upwd}
+    </select>
+    <update id="updateUser" parameterType="Usertest" >
+        update usertest set upwd = #{upwd} where uid = #{uid}
+    </update>
+    <insert id="storeFilm" parameterType="int">
+        insert into user_films(UF_uid,UF_F_ID) values (#{param1},#{param2})
+    </insert>
+    <select id="countStore" parameterType="int" resultType="int">
+        select count(*) from user_films where UF_uid = #{param1} and UF_F_ID = #{param2}
+    </select>
+    <delete id="deleteFilm" parameterType="int">
+        delete from user_films where UF_uid = #{param1} and UF_F_ID = #{param2}
+    </delete>
+    <!--查询用户状态-->
+    <select id="selectUStateByUId" parameterType="Integer" resultType="Integer">
+        select ustate from usertest where uid = #{uid}
+    </select>
+</mapper>

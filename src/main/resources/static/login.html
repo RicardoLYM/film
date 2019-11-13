@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        function login() {
+            var uname = document.getElementById("uname").value;
+            var upwd = document.getElementById("upwd").value;
+            console.log(uname);
+            $.ajax({
+                url:"testlogin1",
+                type:"post",
+                data:'uname='+uname+'&upwd='+upwd,
+                success:function(data){
+                    alert("success");
+                    console.log(data)
+                },
+                error:function () {
+                    alert("fail!");
+                }
+
+            });
+
+        }
+    </script>
+</head>
+<body>
+<form action="" >
+    <label for="uname">账号：</label>
+    <input type="text" id="uname" name="uname">
+    <label for="upwd">密码：</label>
+    <input type="password" id="upwd">
+    <button type="button" onclick="login()">登录</button>
+</form>
+</body>
+</html>

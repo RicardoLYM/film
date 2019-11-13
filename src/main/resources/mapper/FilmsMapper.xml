@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.film.mapper.FilmsMapper">
+    <select id="findAllFilms" resultType="Films">
+        select F_ID fId,F_NAME fName,F_TIME fTime,F_DIRECTOR fDirector,F_IMG fImg,F_INTRO fIntro,F_SCORE fScore from films order by F_SCORE desc
+    </select>
+    <select id="findFilmByFId" resultType="Films" parameterType="Integer">
+        select F_ID fId,F_NAME fName,F_TIME fTime,F_DIRECTOR fDirector,F_IMG fImg,F_INTRO fIntro from films where F_ID = #{fId}
+    </select>
+    <select id="findFilmByTime" resultType="Films">
+        select  F_ID fId,F_NAME fName,F_TIME fTime,F_DIRECTOR fDirector,F_IMG fImg,F_INTRO fIntro from films order by F_TIME desc LIMIT 5
+    </select>
+
+    <select id="newFilmId" resultType="Integer">
+        select max(F_ID) from films
+    </select>
+
+    <resultMap id="filmResultMap" type="Films">
+        <id column="F_ID" property="fId"/>
+        <result column="F_NAME" property="fName"></result>
+        <result column="F_TIME" property="fTime"></result>
+        <result column="F_DIRECTOR" property="fDirector"></result>
+        <result column="F_IMG" property="fImg"></result>
+        <result column="F_INTRO" property="fIntro"></result>
+        <result column="F_SCORE" property="fScore"></result>
+    </resultMap>
+    
+    <resultMap id="filmDetailResultMap" type="Films" extends="filmResultMap">
+        <!--实现一对多关联映射-->
+        <collection property="actorsList" ofType="Actors">
+            <id column="A_ID" property="aId"></id>
+            <result column="A_NAME" property="aName"></result>
+        </collection>
+        <collection property="typesList" ofType="Types">
+            <id column="T_ID" property="tId"></id>
+            <result column="T_NAME" property="tName"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findFilmDetail" resultMap="filmDetailResultMap" parameterType="Integer">
+        SELECT f.F_ID,f.F_NAME,f.F_DIRECTOR,f.F_TIME,f.F_INTRO,f.F_IMG,f.F_SCORE,a.A_ID,a.A_NAME,t.T_ID,t.T_NAME
+        from types t join film_types ft on(t.T_ID=ft.T_ID) join films f on(ft.F_T_ID=f.F_ID)JOIN film_actors fa on(f.F_ID = fa.F_A_ID) join actors a on(fa.A_ID=a.A_ID) where f.F_ID=#{fId}
+    </select>
+
+    <select id="findFilmsByTName" resultMap="filmDetailResultMap" parameterType="String">
+        SELECT f.F_ID,f.F_NAME,f.F_DIRECTOR,f.F_TIME,f.F_INTRO,f.F_IMG,f.F_SCORE,t.T_ID,t.T_NAME
+        from types t join film_types ft on(t.T_ID=ft.T_ID) join films f on(ft.F_T_ID=f.F_ID) where t.T_Name = #{tName}
+    </select>
+
+    <select id="searchFilms" resultMap="filmDetailResultMap" parameterType="String">
+        select f.F_ID,f.F_NAME,f.F_DIRECTOR,f.F_TIME,f.F_INTRO,f.F_IMG,f.F_SCORE,a.A_ID,a.A_NAME
+        from films f JOIN film_actors fa on(f.F_ID = fa.F_A_ID) join actors a on(fa.A_ID=a.A_ID)
+        where F_NAME like '%${_parameter}%' or F_DIRECTOR like '%${_parameter}%' or F_ID
+        in
+        (select fa.F_A_ID from film_actors fa where fa.A_ID in(select a.A_ID from actors a where A_NAME like '%${_parameter}%'))
+    </select>
+
+    <select id="storeFilms" resultMap="filmResultMap" parameterType="int">
+        SELECT f.F_ID,f.F_NAME,f.F_DIRECTOR,f.F_TIME,f.F_INTRO,f.F_IMG,f.F_SCORE from films f where f.F_ID in
+        (select UF_F_ID from user_films where UF_uid = #{uid})
+    </select>
+    <insert id="insertNewFilm" parameterType="Object">
+        insert into films(F_ID,F_NAME,F_TIME,F_DIRECTOR,F_IMG,F_INTRO,F_SCORE) values (#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7})
+    </insert>
+</mapper>
