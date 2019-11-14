@@ -129,7 +129,7 @@ public class FilmsController {
         }
         try {
             file.transferTo(dest); //保存文件
-            return "backStage";
+            return "forward:backStage.html";
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
