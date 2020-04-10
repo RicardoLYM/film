@@ -1,11 +1,16 @@
 package com.example.film.service;
 
 import com.example.film.pojo.Films;
+import com.example.film.pojo.FilmsEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
 
 public interface FilmsService {
+
+    Page<FilmsEntity> findAll(Pageable pageable);
 
     List<Films> findAllFilms();
 

@@ -1,19 +1,31 @@
 package com.example.film.service;
 
+import com.example.film.mapper.FilmsEntityRepository;
 import com.example.film.mapper.FilmsMapper;
 import com.example.film.pojo.Films;
+import com.example.film.pojo.FilmsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Date;
 import java.util.List;
 
 @Service("FilmsService")
 public class FilmsServiceImpl implements FilmsService{
 
-    @Autowired
+    @Resource
     FilmsMapper filmsMapper;
+    @Resource
+    FilmsEntityRepository filmsEntityRepository;
 
+
+    @Override
+    public Page<FilmsEntity> findAll(Pageable pageable) {
+        return filmsEntityRepository.findAll(pageable);
+    }
 
     @Override
     public List<Films> findAllFilms() {

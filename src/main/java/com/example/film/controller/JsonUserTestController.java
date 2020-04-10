@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @RestController
 public class JsonUserTestController {
 
@@ -42,7 +44,7 @@ public class JsonUserTestController {
         return usertestService.findUser();
     }
 
-    @RequestMapping("/jpaFindOne/{uid}")
+    @RequestMapping(value = "/jpaFindOne/{uid}")
     public UsertestEntity japFindOne(@PathVariable int uid){
         return usertestService2.findUserByUid(uid);
     }
@@ -61,15 +63,17 @@ public class JsonUserTestController {
             return uid;
     }
 
+
     @RequestMapping("/getUserSession")
     public  Cookie[] getUserSession(HttpServletRequest request, HttpSession httpSession) throws JSONException {
         Cookie[] cookies = request.getCookies();
         for(int i=0;i<cookies.length;i++){
-            String cName = cookies[i].getName();
-            String cValue = cookies[i].getValue();
+            //String cName = cookies[i].getName();
+            //String cValue = cookies[i].getValue();
         }
         return cookies;
-        }
+    }
+
 
     @RequestMapping("/checkUname")
     public String checkUname(Usertest usertest)throws Exception{

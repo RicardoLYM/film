@@ -2,28 +2,31 @@ package com.example.film.controller;
 
 import com.example.film.pojo.Actors;
 import com.example.film.pojo.Films;
+import com.example.film.pojo.FilmsEntity;
 import com.example.film.pojo.Types;
 import com.example.film.service.ActorsService;
 import com.example.film.service.FilmsService;
 import com.example.film.service.TypesService;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class FilmsController {
 
     @Autowired
@@ -33,9 +36,26 @@ public class FilmsController {
     @Autowired
     ActorsService actorsService;
 
+    @ResponseBody
+    @RequestMapping(value = "/test")
+    public String test(@RequestBody String json){
+        log.info(json);
+        //System.oupt.println(param);
+        return "Ok";
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @RequestMapping("/showFilms/{currPage}")
+    public Page<FilmsEntity> showFilms(Model model,@PathVariable Integer currPage)throws Exception{
+        //页面从第一页  但是jpa中 指向的是0  2代表的是每页显示条目数
+        Pageable pageable = new PageRequest(currPage-1,2);
+        Page<FilmsEntity> pages = filmsService.findAll(pageable);//获取分页信息
+        return pages;
+    }
+
     @RequestMapping("/films")
     public String films(Model model)throws Exception{
-        //System.out.println("访问films页面");
         List<Films> films = filmsService.findAllFilms();
         List<Films> newFilms  = filmsService.findFilmByTime();
         List<Types> types = typesService.findAllTypes();
@@ -73,7 +93,7 @@ public class FilmsController {
         return films;
     }
 
-    @RequestMapping("userInfo")
+    @RequestMapping("/userInfo")
     public String userInfo()throws Exception{
         //System.out.println(111);
         return "userInfo";

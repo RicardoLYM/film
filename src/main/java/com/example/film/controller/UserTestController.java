@@ -30,9 +30,8 @@ public class UserTestController {
 
     @ResponseBody
     @RequestMapping("/showUsertest/{uid}")
-
-    public String selectUser(@PathVariable int uid){
-        return usertestService.selectUser(uid).toString();
+    public Usertest selectUser(@PathVariable int uid){
+        return usertestService.selectUser(uid);
     }
 
     @RequestMapping("/bootstrap11")
@@ -54,23 +53,29 @@ public class UserTestController {
         return "welcome";
     }
 
-    @GetMapping("/showUsers")
+    @PostMapping("/showUsers")
     public String showUsers(Model model)throws Exception{
         List<Usertest> users = usertestService.findUser();
         model.addAttribute("users",users);
         return "allUsers";
     }
 
-    @GetMapping("/showUsers2")
+    @PostMapping("/showUsers2")
     public String showUser2(Model model,@RequestParam(defaultValue = "1")Integer pageNum)throws  Exception{
         //页面从第一页 但是JPA中指向的是0  2代表的是每页显示条目数
         Pageable pageable = new PageRequest(pageNum-1,2);
-        Page<UsertestEntity> pages  = usertestService2.findAll(pageable);//获取分页信息
-        System.out.println(pages.getTotalElements());//获取后台JPA获取到的数据条目数
-        List<UsertestEntity> users = pages.getContent(); //将分页数据 转换为List让前台遍历
-        model.addAttribute("users",users);//数据
-        model.addAttribute("totalPages",pages.getTotalPages());//总页码
-        model.addAttribute("pageNum",pageNum);//当前页码
+        //获取分页信息
+        Page<UsertestEntity> pages  = usertestService2.findAll(pageable);
+        //获取后台JPA获取到的数据条目数
+        System.out.println(pages.getTotalElements());
+        //将分页数据 转换为List让前台遍历
+        List<UsertestEntity> users = pages.getContent();
+        //数据
+        model.addAttribute("users",users);
+        //总页码
+        model.addAttribute("totalPages",pages.getTotalPages());
+        //当前页码
+        model.addAttribute("pageNum",pageNum);
         return "allUsers2";
     }
 }

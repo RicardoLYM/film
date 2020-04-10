@@ -15,5 +15,11 @@ public interface ActorsMapper {
 
     List<Integer> findAIdByAName(List<String> aNameList);
 
+    /**
+     *
+     * @param fId  电影id
+     * @param aIds   演员id 数组
+     * @return 返回insert成功的值
+     */
     int insertNewFilmActors(@Param("fId") int fId,@Param("list") List<Integer> aIds);
 }
