@@ -130,7 +130,7 @@
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
-                    <dockerHost>http://101.200.218.120:2375</dockerHost>
+                    <dockerHost>****************</dockerHost>
                 </configuration>
                 <executions>
                     <execution>
